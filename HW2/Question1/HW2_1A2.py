@@ -50,6 +50,9 @@ def roc_curve(m01, m02, c01, c02, m1, c1, data):
             min_error_rate = error_rate
             min_index = num
 
+    print("The estimated minimum error rate is : " + str(min_error_rate))
+    print("The gamma value at that point is: " + str(min_index * 0.25))
+
     # Theoretical miniumum probability of errorr
     true_negative, false_negative, false_positive, true_positive = 0, 0, 0, 0
     for num in range(0, len(data)):
@@ -75,6 +78,11 @@ def roc_curve(m01, m02, c01, c02, m1, c1, data):
         (true_positive + false_negative)
     theoretical_false_positive_rate = false_positive / \
         (false_positive + true_negative)
+    theoretical_error_rate = theoretical_false_positive_rate * \
+        0.65 + (1 - theoretical_true_positive_rate) * 0.35
+
+    print("The theoretical minimum error rate is : " +
+          str(theoretical_error_rate))
 
     fig, ax = plt.subplots(1, 1, figsize=(5, 5))
     ax.plot(false_positive_list, true_positive_list, 'b.', markersize=2)
