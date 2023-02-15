@@ -13,6 +13,8 @@ def determine_decision(m01, c01, m02, c02, m03, c03, data):
     incorrect1, incorrect2, incorrect3 = 0, 0, 0
     incorrect1list, incorrect2list, incorrect3list = [], [], []
 
+    confusion_matrix = np.zeros((3, 3))
+
     for num in range(0, len(data)):
         value = data.iloc[num].to_numpy()[:-1]
         class_prior = data.iloc[num].to_numpy()[-1]
@@ -31,9 +33,7 @@ def determine_decision(m01, c01, m02, c02, m03, c03, data):
                 decision = num + 1
                 smallest = x
 
-        # print(new_matrix)
-        # print(decision)
-        # print(data["class_prior"][num])
+        confusion_matrix[int(class_prior) - 1, decision - 1] += 1
 
         if class_prior == 1 and decision == 1:
             correct1 += 1
@@ -53,6 +53,8 @@ def determine_decision(m01, c01, m02, c02, m03, c03, data):
         elif decision != 3 and class_prior == 3:
             incorrect3 += 1
             incorrect3list.append(value)
+
+    confusion_matrix /= 10000
 
     # stuff for ploting
     correct1x, correct1y, correct1z = [], [], []
@@ -103,6 +105,22 @@ def determine_decision(m01, c01, m02, c02, m03, c03, data):
     ax.scatter(np.array(incorrect3x), np.array(incorrect3y),
                np.array(incorrect3z), marker='^', color='r')
 
+    plt.savefig("2A3.png")
+
+    fig = plt.figure(figsize=(10, 10))
+
+    ax = fig.add_subplot(111)
+    ax.imshow(confusion_matrix, cmap='Blues')
+    ax.set_xticks([0, 1, 2])
+    ax.set_yticks([0, 1, 2])
+    ax.set_xticklabels(['1', '2', '3'])
+    ax.set_yticklabels(['1', '2', '3'])
+    ax.set_xlabel('Decision')
+    ax.set_ylabel('Label')
+    for i in range(3):
+        for j in range(3):
+            ax.text(j, i, str(confusion_matrix[i, j]),
+                    ha='center', va='center', color='black')
     plt.savefig("2A2.png")
 
 
