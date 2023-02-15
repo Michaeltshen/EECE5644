@@ -54,9 +54,14 @@ def determine_decision(m01, c01, m02, c02, m03, c03, data):
             incorrect3 += 1
             incorrect3list.append(value)
 
-    confusion_matrix /= 10000
+    confusion_matrix /= 10000 * 100
 
-    # stuff for ploting
+    for i in range(0, 3):
+        for j in range(0, 3):
+            print(confusion_matrix[i][j], end=" ")
+        print("\n")
+
+    # stuff for ploting graph
     correct1x, correct1y, correct1z = [], [], []
     correct2x, correct2y, correct2z = [], [], []
     correct3x, correct3y, correct3z = [], [], []
@@ -106,22 +111,6 @@ def determine_decision(m01, c01, m02, c02, m03, c03, data):
                np.array(incorrect3z), marker='^', color='r')
 
     plt.savefig("2A3.png")
-
-    fig = plt.figure(figsize=(10, 10))
-
-    ax = fig.add_subplot(111)
-    ax.imshow(confusion_matrix, cmap='Blues')
-    ax.set_xticks([0, 1, 2])
-    ax.set_yticks([0, 1, 2])
-    ax.set_xticklabels(['1', '2', '3'])
-    ax.set_yticklabels(['1', '2', '3'])
-    ax.set_xlabel('Decision')
-    ax.set_ylabel('Label')
-    for i in range(3):
-        for j in range(3):
-            ax.text(j, i, str(confusion_matrix[i, j]),
-                    ha='center', va='center', color='black')
-    plt.savefig("2A2.png")
 
 
 def main():
