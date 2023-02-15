@@ -6,8 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def determine_decision(m01, c01, m02, c02, m03, c03, data):
-    loss_matrix = np.array([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+def determine_decision(m01, c01, m02, c02, m03, c03, data, loss_matrix, output_name):
     correct1, correct2, correct3 = 0, 0, 0
     correct1list, correct2list, correct3list = [], [], []
     incorrect1, incorrect2, incorrect3 = 0, 0, 0
@@ -87,12 +86,12 @@ def determine_decision(m01, c01, m02, c02, m03, c03, data):
                np.array(correct2z), marker='s', color='g')
     ax.scatter(np.array(correct3x), np.array(correct3y),
                np.array(correct3z), marker='^', color='g')
-
     ax.set_xlabel("X")
     ax.set_ylabel("Y")
     ax.set_zlabel("Z")
 
-    ax.set_title("Original Loss Matrix Classification Data")
+    title_name = output_name[:-4] + " Loss Matrix Classification Data"
+    ax.set_title(title_name)
 
     incorrect1x, incorrect1y, incorrect1z = [], [], []
     incorrect2x, incorrect2y, incorrect2z = [], [], []
@@ -116,8 +115,7 @@ def determine_decision(m01, c01, m02, c02, m03, c03, data):
                np.array(incorrect2z), marker='s', color='r')
     ax.scatter(np.array(incorrect3x), np.array(incorrect3y),
                np.array(incorrect3z), marker='^', color='r')
-
-    plt.savefig("2A3.png")
+    plt.savefig(output_name)
 
 
 def main():
@@ -129,7 +127,12 @@ def main():
     c03 = [[6, 0, 0], [0, 6, 0], [0, 0, 6]]
     data = read_csv("Datafile2.csv")
 
-    determine_decision(m01, c01, m02, c02, m03, c03, data)
+    loss_matrix_a10 = np.array([[0, 1, 1], [1, 0, 1], [10, 10, 0]])
+    determine_decision(m01, c01, m02, c02, m03, c03,
+                       data, loss_matrix_a10, "a10.png")
+    loss_matrix_a100 = np.array([[0, 1, 1], [1, 0, 1], [100, 100, 0]])
+    determine_decision(m01, c01, m02, c02, m03, c03,
+                       data, loss_matrix_a100, "a100.png")
 
 
 if __name__ == "__main__":
